@@ -1,0 +1,39 @@
+{
+  "name": "package-json-chainer",
+  "version": "1.0.0",
+  "description": "Accepts a list of parsed package.json objects and returns them in an order where dependencies are first.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bjohnson-va/package-json-chainer.git"
+  },
+  "keywords": [
+    "npm",
+    "package",
+    "sort",
+    "dependency",
+    "dependencies",
+    "package.json",
+    "peerDependencies",
+    "order",
+    "tree"
+  ],
+  "devDependencies": {
+    "@babel/core": "*",
+    "@babel/preset-env": "*",
+    "babel-jest": "*",
+    "jest": "*"
+  },
+  "author": "Brad Johnson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bjohnson-va/package-json-chainer/issues"
+  },
+  "homepage": "https://github.com/bjohnson-va/package-json-chainer#readme",
+  "dependencies": {
+    "tree-model": "^1.0.7"
+  }
+}
