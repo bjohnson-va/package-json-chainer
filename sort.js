@@ -5,8 +5,33 @@ function partition(array, isValid) {
 }
 
 function sort(packages) {
+    if (packages.length === 0) {
+        return [];
+    }
 
-    return flattenTree([], tree);
+    const tree = buildTree(packages);
+    const out = [];
+
+    do {
+        let key = Object.keys(tree)[0];
+        while (!!key) {
+            const node = tree[key];
+            if (!node) {
+                break;
+            }
+
+            delete tree[key];
+            if (node.isLeaf) {
+                out.push(key);
+                break;
+            } else {
+                out.unshift(key);
+            }
+            key = node.users[0];
+        }
+    } while (Object.keys(tree).length > 0);
+    return out;
+
 }
 
 function buildTree(packages) {
