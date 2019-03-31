@@ -47,6 +47,38 @@ test('sort should put dependency first (2 packages already in wrong order)', () 
     expect(actual).toEqual(expected);
 });
 
+test('sort should put dependencies first in M shaped graph', () => {
+    // This is the scenario where there are 2 dependencies and 3 users, their
+    // relationship is shaped like an M
+    const dep1 = {
+        name: "DEP1",
+        peerDependencies: [],
+    };
+    const dep2 = {
+        name: "DEP2",
+        peerDependencies: [],
+    };
+    const user1 = {
+        name: "U1",
+        peerDependencies: ["DEP1"],
+    };
+    const user2 = {
+        name: "U2",
+        peerDependencies: ["DEP1", "DEP2"],
+    };
+    const user3 = {
+        name: "U3",
+        peerDependencies: ["DEP2"],
+    };
+    const actual = sort([dep1, dep2, user1, user2, user3]);
+    expect(actual.indexOf("DEP1")).toBeLessThan(actual.indexOf("U1"));
+    expect(actual.indexOf("DEP1")).toBeLessThan(actual.indexOf("U2"));
+    expect(actual.indexOf("DEP1")).toBeLessThan(actual.indexOf("U3"));
+    expect(actual.indexOf("DEP2")).toBeLessThan(actual.indexOf("U1"));
+    expect(actual.indexOf("DEP2")).toBeLessThan(actual.indexOf("U2"));
+    expect(actual.indexOf("DEP2")).toBeLessThan(actual.indexOf("U3"));
+});
+
 test('buildTree should build correct tree for 2 packages with 1 dependency relationship', () => {
     const pkgWithDeps = {
         name: "HASDEPS",
