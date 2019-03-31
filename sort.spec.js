@@ -79,6 +79,56 @@ test('sort should put dependencies first in M shaped graph', () => {
     expect(actual.indexOf("DEP2")).toBeLessThan(actual.indexOf("U3"));
 });
 
+test('sort should put dependencies first in X shaped graph', () => {
+    // This is the scenario where there are 2 dependencies and 1 users "U", and
+    // then 2 users of U.
+    const deepDep1 = {
+        name: "DEEPDEP1",
+        peerDependencies: [],
+    };
+    const deepDep2 = {
+        name: "DEEPDEP2",
+        peerDependencies: [],
+    };
+    const dep = {
+        name: "DEP",
+        peerDependencies: ["DEEPDEP1", "DEEPDEP2"],
+    };
+    const user1 = {
+        name: "U1",
+        peerDependencies: ["DEP"],
+    };
+    const user2 = {
+        name: "U2",
+        peerDependencies: ["DEP"],
+    };
+    const actual = sort([deepDep1, deepDep2, dep, user1, user2]);
+    expect(actual.indexOf("DEEPDEP1")).toBeLessThan(actual.indexOf("DEP"));
+    expect(actual.indexOf("DEEPDEP2")).toBeLessThan(actual.indexOf("DEP"));
+    expect(actual.indexOf("DEP")).toBeLessThan(actual.indexOf("U1"));
+    expect(actual.indexOf("DEP")).toBeLessThan(actual.indexOf("U2"));
+});
+
+test('sort should put dependencies first in I shaped 3-node graph', () => {
+    // This is the scenario where there is 1 dependency and 1 user "U", and then
+    // another user of U.
+    const deepDep = {
+        name: "DEEPDEP",
+        peerDependencies: [],
+    };
+    const dep = {
+        name: "DEP",
+        peerDependencies: ["DEEPDEP"],
+    };
+    const user = {
+        name: "U",
+        peerDependencies: ["DEP"],
+    };
+    const actual = sort([deepDep, dep, user]);
+    expect(actual.indexOf("DEEPDEP")).toBeLessThan(actual.indexOf("DEP"));
+    expect(actual.indexOf("DEP")).toBeLessThan(actual.indexOf("U"));
+});
+
 test('buildTree should build correct tree for 2 packages with 1 dependency relationship', () => {
     const pkgWithDeps = {
         name: "HASDEPS",
